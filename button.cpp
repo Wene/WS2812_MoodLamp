@@ -10,6 +10,10 @@ Button::Button(int pin)
   this->pin = pin;
   pinMode(pin, INPUT_PULLUP);
   push_count = 0;
+
+  cb_shortPush = empty_callback;  
+  cb_longPush = empty_callback;  
+  cb_stopPush = empty_callback;
 }
 
 Button::tick(unsigned long now)
@@ -57,3 +61,10 @@ Button::register_longPush(void (*func)())
 {
   cb_longPush = func;
 }
+
+Button::register_stopPush(void (*func)())
+{
+  cb_stopPush = func;
+}
+
+static void Button::empty_callback(){}

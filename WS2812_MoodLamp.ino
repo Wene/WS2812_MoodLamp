@@ -1,14 +1,17 @@
 #include "FastLED.h"
 #include "button.h"
+#include "anim_lava.h"
+
+namespace a = animation;
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
 #define BUTTON_PIN 9
 
 CRGB leds[NUM_LEDS];
-CRGB color[3];
 
 Button btn(BUTTON_PIN);
+a::Lava lava(leds, NUM_LEDS);
 
 bool pause = false;
 void togglePause()
@@ -32,10 +35,6 @@ void setup() {
   memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
   FastLED.show();
 
-  color[0] = CRGB::Red;
-  color[1] = CRGB::Green;
-  color[2] = CRGB::Blue;
-
   Serial.begin(115200);
 
   pinMode(LED_BUILTIN, OUTPUT);
@@ -52,7 +51,8 @@ void loop()
 {
   unsigned long now = millis();
   
-  btn.tick();
+  btn.tick(now);
+  lava.animate(now);
   if(pause)
   {
     return;

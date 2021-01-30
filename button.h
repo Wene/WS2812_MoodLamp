@@ -5,7 +5,7 @@ class Button
 {
 public:
   Button(int pin);
-  tick();
+  tick(unsigned long now);
   register_shortPush(void (*func)());
   register_longPush(void (*func)());
 
@@ -18,4 +18,4 @@ private:
   unsigned long last_time;
 };
 
-#endif
+#endif  //BUTTON_H

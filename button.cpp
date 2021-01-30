@@ -12,10 +12,8 @@ Button::Button(int pin)
   push_count = 0;
 }
 
-Button::tick()
+Button::tick(unsigned long now)
 {
-  unsigned long now = millis();
-
   bool pushed = !digitalRead(pin);  
   if(pushed)
   {

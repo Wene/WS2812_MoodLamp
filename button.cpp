@@ -45,9 +45,13 @@ Button::tick(unsigned long now)
     if(push_count && !long_push && now >= last_time + SHORT)
     {
       cb_shortPush();
-    }    
+    }
+    else if(long_push)
+    {
+      long_push = false;
+      cb_stopPush();
+    }
     push_count = 0;
-    long_push = false;
     last_time = now;
   }
 }

@@ -13,56 +13,68 @@ CRGB leds[NUM_LEDS];
 Button btn(BUTTON_PIN);
 a::Lava lava(leds, NUM_LEDS);
 
-bool pause = false;
-void togglePause()
+void reset_leds()
 {
-  pause = !pause;
+  memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+  FastLED.show();
 }
-int long_count = 0;
-void indicateLong()
+
+bool light_on = false;
+void toggleLight()
 {
-  long_count++;
-  Serial.println(long_count);
+  light_on = !light_on;
+  if(!light_on)
+  {
+    reset_leds();
+  }
+}
+
+bool dim_up = true;
+void turnDim()
+{
+  dim_up = !dim_up;
+}
+
+uint8_t brightness = 30;
+void dim()
+{
+  if(dim_up && brightness < 255)
+  {
+    brightness++;
+  }
+  else if(!dim_up && brightness > 0)
+  {
+    brightness--;
+  }
+  FastLED.setBrightness(brightness);
 }
 
 void setup() {
-  //setting maximum brightness
-  FastLED.setBrightness(80);
-
+  FastLED.setBrightness(brightness);
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
 
-  //reset all the LEDs
-  memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
-  FastLED.show();
+  reset_leds();
+  
+//  Serial.begin(115200);
 
-  Serial.begin(115200);
+//  pinMode(LED_BUILTIN, OUTPUT);
+//  digitalWrite(LED_BUILTIN, LOW);
 
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
-
-  btn.register_shortPush(togglePause);
-  btn.register_longPush(indicateLong);
+  btn.register_shortPush(toggleLight);
+  btn.register_longPush(dim);
+  btn.register_stopPush(turnDim);
 }
 
 unsigned long last_time = 0;
-bool led_state = false;
 
 void loop()
 {
   unsigned long now = millis();
   
   btn.tick(now);
-  lava.animate(now);
-  if(pause)
+  if(!light_on)
   {
     return;
   }
-  
-  if(now > last_time + 200)
-  {
-    last_time = now;
-    led_state = !led_state;
-    digitalWrite(LED_BUILTIN, led_state);
-  }
-  
+  lava.animate(now);
 }

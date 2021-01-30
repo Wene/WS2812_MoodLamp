@@ -1,11 +1,26 @@
 #include "FastLED.h"
+#include "button.h"
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
-#define SWITCH_PIN 9
+#define BUTTON_PIN 9
 
 CRGB leds[NUM_LEDS];
 CRGB color[3];
+
+Button btn(BUTTON_PIN);
+
+bool pause = false;
+void togglePause()
+{
+  pause = !pause;
+}
+int long_count = 0;
+void indicateLong()
+{
+  long_count++;
+  Serial.println(long_count);
+}
 
 void setup() {
   //setting maximum brightness
@@ -21,29 +36,33 @@ void setup() {
   color[1] = CRGB::Green;
   color[2] = CRGB::Blue;
 
+  Serial.begin(115200);
+
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
-  pinMode(SWITCH_PIN, INPUT_PULLUP);
+
+  btn.register_shortPush(togglePause);
+  btn.register_longPush(indicateLong);
 }
+
+unsigned long last_time = 0;
+bool led_state = false;
 
 void loop()
 {
-  for (int iLED = 0; iLED < NUM_LEDS; iLED++)
+  unsigned long now = millis();
+  
+  btn.tick();
+  if(pause)
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    for (int iColor = 0; iColor < 3; iColor++)
-    {
-      leds[iLED] = color[iColor];
-      FastLED.show();
-      delay(200);
-      while(digitalRead(SWITCH_PIN) == LOW)
-      {
-        delay(100);
-      }
-    }
-    digitalWrite(LED_BUILTIN, LOW);
-    leds[iLED] = CRGB::Black;
-    FastLED.show();
-    delay(200);
+    return;
   }
+  
+  if(now > last_time + 200)
+  {
+    last_time = now;
+    led_state = !led_state;
+    digitalWrite(LED_BUILTIN, led_state);
+  }
+  
 }

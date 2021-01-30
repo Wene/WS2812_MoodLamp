@@ -28,7 +28,7 @@ Lava::animate(unsigned long now)
   FastLED.show();
   
   pos++;
-  if(pos > led_count)
+  if(pos >= led_count)
   {
     pos = 0;
     act_col++;

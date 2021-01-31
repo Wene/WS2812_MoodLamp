@@ -14,11 +14,8 @@ public:
 private:
   CRGB *leds;
   int led_count;
-  unsigned int pos;
   unsigned long step_time;
   unsigned long last_time;
-  CRGB color[3];
-  int act_col;
 };
 
 } //namespace

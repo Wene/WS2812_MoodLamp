@@ -7,13 +7,7 @@ Lava::Lava(CRGB *leds, int count)
 {
   this->leds = leds;
   led_count = count;
-  pos = 0;
-  step_time = 100;
-  
-  color[0] = CRGB::Red;
-  color[1] = CRGB::Green;
-  color[2] = CRGB::Blue;
-  act_col = 0;
+  step_time = 200;
 }
 
 Lava::animate(unsigned long now)
@@ -24,17 +18,15 @@ Lava::animate(unsigned long now)
   }
   last_time = now;
 
-  leds[pos] = color[act_col];
-  
-  pos++;
-  if(pos >= led_count)
+  int side_count = led_count / 4;
+  for(int side = 0; side < 4; side++)
   {
-    pos = 0;
-    act_col++;
-    if(act_col > 2)
+    int side_min = side * side_count;
+    for(int led = side_min + (side_count-1); led > side_min; led--)
     {
-      act_col = 0;
+      leds[led] = leds[led-1];
     }
+    leds[side_min].setHue(random(0, 246));
   }
 }
 

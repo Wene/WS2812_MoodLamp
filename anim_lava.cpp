@@ -25,7 +25,6 @@ Lava::animate(unsigned long now)
   last_time = now;
 
   leds[pos] = color[act_col];
-  FastLED.show();
   
   pos++;
   if(pos >= led_count)

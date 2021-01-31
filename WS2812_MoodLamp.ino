@@ -76,4 +76,5 @@ void loop()
   }
   
   lava.animate(now);
+  FastLED.show();
 }

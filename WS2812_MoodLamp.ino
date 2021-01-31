@@ -65,8 +65,6 @@ void setup() {
   btn.register_stopPush(turnDim);
 }
 
-unsigned long last_time = 0;
-
 void loop()
 {
   unsigned long now = millis();
@@ -76,5 +74,6 @@ void loop()
   {
     return;
   }
+  
   lava.animate(now);
 }

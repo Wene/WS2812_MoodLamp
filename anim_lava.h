@@ -15,7 +15,7 @@ private:
   CRGB *leds;
   int led_count;
   unsigned int pos;
-  int step_time;
+  unsigned long step_time;
   unsigned long last_time;
   CRGB color[3];
   int act_col;

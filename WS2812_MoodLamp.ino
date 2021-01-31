@@ -13,19 +13,14 @@ CRGB leds[NUM_LEDS];
 Button btn(BUTTON_PIN);
 a::Lava lava(leds, NUM_LEDS);
 
-void reset_leds()
-{
-  memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
-  FastLED.show();
-}
-
 bool light_on = false;
 void toggleLight()
 {
   light_on = !light_on;
   if(!light_on)
   {
-    reset_leds();
+    FastLED.clear();
+    FastLED.show();
   }
 }
 
@@ -52,8 +47,8 @@ void dim()
 void setup() {
   FastLED.setBrightness(brightness);
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
-
-  reset_leds();
+  FastLED.clear(true);
+  FastLED.show();
   
 //  Serial.begin(115200);
 

@@ -1,15 +1,15 @@
-#ifndef ANIM_LAVA_H
-#define ANIM_LAVA_H
+#ifndef ANIM_RAND_H
+#define ANIM_RAND_H
 
 #include "FastLED.h"
 
 namespace animation
 {
 
-class Lava
+class Rand
 {
 public:
-  Lava(CRGB *leds, int count);
+  Rand(CRGB *leds, int count);
   animate(unsigned long now);
 private:
   CRGB *leds;
@@ -20,4 +20,4 @@ private:
 
 } //namespace
 
-#endif //ANIM_LAVA_H
+#endif //ANIM_RAND_H

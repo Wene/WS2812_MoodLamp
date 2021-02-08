@@ -1,6 +1,6 @@
 #include "FastLED.h"
 #include "button.h"
-#include "anim_lava.h"
+#include "anim_rand.h"
 
 namespace a = animation;
 
@@ -11,7 +11,7 @@ namespace a = animation;
 CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
-a::Lava lava(leds, NUM_LEDS);
+a::Rand anim(leds, NUM_LEDS);
 
 bool light_on = false;
 void toggleLight()
@@ -70,6 +70,6 @@ void loop()
     return;
   }
   
-  lava.animate(now);
+  anim.animate(now);
   FastLED.show();
 }

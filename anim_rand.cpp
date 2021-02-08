@@ -1,16 +1,16 @@
-#include "anim_lava.h"
+#include "anim_rand.h"
 
 namespace animation
 {
 
-Lava::Lava(CRGB *leds, int count)
+Rand::Rand(CRGB *leds, int count)
 {
   this->leds = leds;
   led_count = count;
   step_time = 200;
 }
 
-Lava::animate(unsigned long now)
+Rand::animate(unsigned long now)
 {
   if(now < last_time + step_time)
   {

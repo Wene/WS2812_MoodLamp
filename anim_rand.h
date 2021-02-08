@@ -1,23 +1,19 @@
 #ifndef ANIM_RAND_H
 #define ANIM_RAND_H
 
-#include "FastLED.h"
+#include <FastLED.h>
+#include "animation.h"
 
-namespace animation
-{
-
-class Rand
+class Rand : public Animation
 {
 public:
   Rand(CRGB *leds, int count);
-  animate(unsigned long now);
+  void animate(unsigned long now);
 private:
   CRGB *leds;
   int led_count;
   unsigned long step_time;
   unsigned long last_time;
 };
-
-} //namespace
 
 #endif //ANIM_RAND_H

@@ -1,8 +1,7 @@
 #include "FastLED.h"
 #include "button.h"
+#include "animation.h"
 #include "anim_rand.h"
-
-namespace a = animation;
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
@@ -11,7 +10,8 @@ namespace a = animation;
 CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
-a::Rand anim(leds, NUM_LEDS);
+Rand anim_rand(leds, NUM_LEDS);
+Animation &anim = anim_rand;
 
 bool light_on = false;
 void toggleLight()
@@ -58,6 +58,8 @@ void setup() {
   btn.register_shortPush(toggleLight);
   btn.register_longPush(dim);
   btn.register_stopPush(turnDim);
+
+  anim = anim_rand;
 }
 
 void loop()

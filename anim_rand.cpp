@@ -1,8 +1,5 @@
 #include "anim_rand.h"
 
-namespace animation
-{
-
 Rand::Rand(CRGB *leds, int count)
 {
   this->leds = leds;
@@ -10,7 +7,7 @@ Rand::Rand(CRGB *leds, int count)
   step_time = 200;
 }
 
-Rand::animate(unsigned long now)
+void Rand::animate(unsigned long now)
 {
   if(now < last_time + step_time)
   {
@@ -29,5 +26,3 @@ Rand::animate(unsigned long now)
     leds[side_min].setHue(random(0, 246));
   }
 }
-
-} //namespace

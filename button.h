@@ -9,9 +9,9 @@ public:
   register_shortPush(void (*func)());
   register_longPush(void (*func)());
   register_stopPush(void (*func)());
+  static void empty_callback();
 
 private:
-  static void empty_callback();
   int pin;
   int push_count;
   (*cb_shortPush)();

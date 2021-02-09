@@ -2,6 +2,7 @@
 #include "button.h"
 #include "animation.h"
 #include "anim_rand.h"
+#include "anim_lava.h"
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
@@ -11,16 +12,27 @@ CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
 Rand anim_rand(leds, NUM_LEDS);
-Animation &anim = anim_rand;
+Lava anim_lava(leds, NUM_LEDS);
+
+void dim();
+void turnDim();
+void cycleAnim();
 
 bool light_on = false;
 void toggleLight()
 {
   light_on = !light_on;
-  if(!light_on)
+  if(light_on)
+  {
+    btn.register_longPush(dim);
+    btn.register_stopPush(turnDim);    
+  }
+  else
   {
     FastLED.clear();
     FastLED.show();
+    btn.register_longPush(Button::empty_callback);
+    btn.register_stopPush(cycleAnim);
   }
 }
 
@@ -44,22 +56,30 @@ void dim()
   FastLED.setBrightness(brightness);
 }
 
+Animation *anim;
+void cycleAnim()
+{
+  if(anim == &anim_rand)
+  {
+    anim = &anim_lava;
+  }
+  else
+  {
+    anim = &anim_rand;
+  }
+}
+
 void setup() {
   FastLED.setBrightness(brightness);
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
   FastLED.clear(true);
   FastLED.show();
   
-//  Serial.begin(115200);
-
-//  pinMode(LED_BUILTIN, OUTPUT);
-//  digitalWrite(LED_BUILTIN, LOW);
-
   btn.register_shortPush(toggleLight);
-  btn.register_longPush(dim);
-  btn.register_stopPush(turnDim);
+  btn.register_longPush(Button::empty_callback);
+  btn.register_stopPush(cycleAnim);
 
-  anim = anim_rand;
+  anim = &anim_rand;
 }
 
 void loop()
@@ -72,6 +92,6 @@ void loop()
     return;
   }
   
-  anim.animate(now);
+  anim->animate(now);
   FastLED.show();
 }

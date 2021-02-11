@@ -17,7 +17,9 @@ private:
   unsigned long last_bubble_step;
   uint8_t hue_pos;
   uint8_t bubble_pos;
+  
   uint8_t sub_pixels;
+  uint8_t dim_part;
 };
 
 

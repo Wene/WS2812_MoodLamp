@@ -5,6 +5,7 @@ Lava::Lava(CRGB *leds, int count)
   this->leds = leds;
   led_count = count;
   sub_pixels = 256 / count;
+  dim_part = 200 / sub_pixels;
 }
 
 void Lava::animate(unsigned long now)
@@ -25,7 +26,7 @@ void Lava::animate(unsigned long now)
     uint8_t v_start = bubble_pos++; // position rolls automatically over
     for(uint8_t i = 0; i < 28; i++)
     {
-      leds[(v_start++)/sub_pixels].subtractFromRGB(15);
+      leds[(v_start++)/sub_pixels].subtractFromRGB(dim_part);
     }
   }
 }

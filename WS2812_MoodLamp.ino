@@ -11,8 +11,6 @@
 CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
-Rand anim_rand(leds, NUM_LEDS);
-Lava anim_lava(leds, NUM_LEDS);
 
 void dim();
 void turnDim();
@@ -59,13 +57,21 @@ void dim()
 Animation *anim;
 void cycleAnim()
 {
-  if(anim == &anim_rand)
+  static int last_anim = 0;
+  delete(anim);
+  switch(last_anim)
   {
-    anim = &anim_lava;
+    default:
+    case 0:
+      anim = new Lava(leds, NUM_LEDS);
+    break;
+    case 1:
+      anim = new Rand(leds, NUM_LEDS);
+    break;
   }
-  else
+  if(++last_anim > 1)
   {
-    anim = &anim_rand;
+    last_anim = 0;
   }
 }
 
@@ -79,7 +85,7 @@ void setup() {
   btn.register_longPush(Button::empty_callback);
   btn.register_stopPush(cycleAnim);
 
-  anim = &anim_rand;
+  anim = new Rand(leds, NUM_LEDS);
 }
 
 void loop()

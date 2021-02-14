@@ -1,9 +1,7 @@
 #include "anim_rand.h"
 
-Rand::Rand(CRGB *leds, int count)
+Rand::Rand(CRGB *leds, unsigned int count) : Animation(leds, count)
 {
-  this->leds = leds;
-  led_count = count;
   step_time = 200;
 }
 

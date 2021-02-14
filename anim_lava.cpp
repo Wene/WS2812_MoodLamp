@@ -1,9 +1,7 @@
 #include "anim_lava.h"
 
-Lava::Lava(CRGB *leds, int count)
+Lava::Lava(CRGB *leds, unsigned int count) : Animation(leds, count)
 {
-  this->leds = leds;
-  led_count = count;
   sub_pixels = 20;
   dim_part = 200 / sub_pixels;
 }

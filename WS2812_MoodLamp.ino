@@ -58,7 +58,7 @@ Animation *anim;
 void cycleAnim()
 {
   static int last_anim = 0;
-  delete(anim);
+  delete anim;
   switch(last_anim)
   {
     default:

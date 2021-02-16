@@ -8,8 +8,8 @@ class Lava : public Animation
 public:
   Lava(CRGB *leds, unsigned int count);
   void animate(unsigned long now);
-private:
 
+private:
   unsigned long last_hue_step;
   unsigned long last_bubble_step;
   uint8_t hue_pos;

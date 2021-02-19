@@ -16,7 +16,7 @@ Button::Button(int pin)
   cb_stopPush = empty_callback;
 }
 
-Button::tick(unsigned long now)
+void Button::tick(unsigned long now)
 {
   bool pushed = !digitalRead(pin);  
   if(pushed)
@@ -56,19 +56,19 @@ Button::tick(unsigned long now)
   }
 }
 
-Button::register_shortPush(void (*func)())
+void Button::register_shortPush(void (*func)())
 {
   cb_shortPush = func;
 }
 
-Button::register_longPush(void (*func)())
+void Button::register_longPush(void (*func)())
 {
   cb_longPush = func;
 }
 
-Button::register_stopPush(void (*func)())
+void Button::register_stopPush(void (*func)())
 {
   cb_stopPush = func;
 }
 
-static void Button::empty_callback(){}
+void Button::empty_callback(){}

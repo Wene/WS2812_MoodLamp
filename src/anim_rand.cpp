@@ -4,13 +4,10 @@ Rand::Rand(CRGB *leds, unsigned int count) : Animation(leds, count)
 {
   step_time = 30;
   cycle_pos = 0;
-  
-  for(uint8_t i = 0; i < SIDES; i++)
+
+  for(uint8_t iDot = 0; iDot < DOTS; iDot++)
   {
-    for(uint8_t j = 0; j < DOTS; j++)
-    {
-      new_dot(&sides[i]);
-    }
+    new_dots();
   }
 }
 
@@ -31,8 +28,11 @@ void Rand::animate(unsigned long now)
     uint8_t iSubDot = 0;
     for(uint8_t iPart = 0; iPart < DOTS-1; iPart++)
     {
-      uint8_t rStart = sides[iSide].dots[iPart].r;
-      uint8_t rEnd = sides[iSide].dots[iPart+1].r;
+      CRGB pix;
+      pix.setHue(sides[iSide][iPart]);
+      uint8_t rStart = pix.r;
+      pix.setHue(sides[iSide][iPart+1]);
+      uint8_t rEnd = pix.r;
       for(uint8_t iStep = 0; iStep < STEPS; iStep++)
       {
         unsigned int sum = rEnd * iStep + rStart * (STEPS-iStep);
@@ -50,8 +50,11 @@ void Rand::animate(unsigned long now)
     iSubDot = 0;
     for(uint8_t iPart = 0; iPart < DOTS-1; iPart++)
     {
-      uint8_t gStart = sides[iSide].dots[iPart].g;
-      uint8_t gEnd = sides[iSide].dots[iPart+1].g;
+      CRGB pix;
+      pix.setHue(sides[iSide][iPart]);
+      uint8_t gStart = pix.g;
+      pix.setHue(sides[iSide][iPart+1]);
+      uint8_t gEnd = pix.g;
       for(uint8_t iStep = 0; iStep < STEPS; iStep++)
       {
         unsigned int sum = gEnd * iStep + gStart * (STEPS-iStep);
@@ -69,8 +72,11 @@ void Rand::animate(unsigned long now)
     iSubDot = 0;
     for(uint8_t iPart = 0; iPart < DOTS-1; iPart++)
     {
-      uint8_t bStart = sides[iSide].dots[iPart].b;
-      uint8_t bEnd = sides[iSide].dots[iPart+1].b;
+      CRGB pix;
+      pix.setHue(sides[iSide][iPart]);
+      uint8_t bStart = pix.b;
+      pix.setHue(sides[iSide][iPart+1]);
+      uint8_t bEnd = pix.b;
       for(uint8_t iStep = 0; iStep < STEPS; iStep++)
       {
         unsigned int sum = bEnd * iStep + bStart * (STEPS-iStep);
@@ -90,20 +96,18 @@ void Rand::animate(unsigned long now)
   if(cycle_pos >= STEPS)
   {
     cycle_pos = 0;
-    for(uint8_t i = 0; i < SIDES; i++)
-    {
-      new_dot(&sides[i]);
-    }
+    new_dots();
   }
 }
 
-void Rand::new_dot(Side *my_side)
+void Rand::new_dots()
 {
-  for(uint8_t i = DOTS - 1; i > 0; i--)
+  for(uint8_t iSide = 0; iSide < SIDES; iSide++)
   {
-    my_side->dots[i] = my_side->dots[i-1];
+    for(uint8_t iDot = DOTS - 1; iDot > 0; iDot--)
+    {
+      sides[iSide][iDot] = sides[iSide][iDot-1];
+    }
+    sides[iSide][0] = random(0, 256);
   }
-  CRGB new_pixel;
-  new_pixel.setHue(random(0, 256));
-  my_side->dots[0] = {.r = new_pixel.r, .g = new_pixel.g, .b = new_pixel.b};
 }

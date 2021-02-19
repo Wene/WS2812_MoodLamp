@@ -8,18 +8,6 @@
 #define DOTS 5
 #define SUB_COUNT STEPS*(DOTS-1)
 
-struct Dot
-{
-  uint8_t r;
-  uint8_t g;
-  uint8_t b;
-};
-
-struct Side
-{
-  Dot dots[DOTS];
-};
-
 class Rand : public Animation
 {
 public:
@@ -30,9 +18,9 @@ private:
   unsigned long step_time;
   unsigned long last_time;
   
-  Side sides[4];
+  uint8_t sides[SIDES][DOTS];
   uint8_t cycle_pos;
-  void new_dot(Side *my_side);
+  void new_dots();
   uint8_t sub_dots[SUB_COUNT];
 };
 

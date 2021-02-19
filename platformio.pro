@@ -30,7 +30,8 @@ DEFINES += "__AVR_ATmega328P__"
 
 OTHER_FILES += platformio.ini
 
-SOURCES += src/anim_rand.cpp
+SOURCES += src/anim_rand.cpp \
+    src/animation.cpp
 HEADERS += src/anim_lava.h
 HEADERS += src/animation.h
 SOURCES += src/button.cpp

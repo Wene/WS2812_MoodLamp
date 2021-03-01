@@ -45,12 +45,12 @@ void Rand::animate(unsigned long now)
       CRGB endPix;
       endPix.setHue(sides[iSide][iPart+1]);
 
-      unsigned int red = subPos * endPix.r + (STEPS - subPos) * startPix.r;
-      unsigned int green = subPos * endPix.g + (STEPS - subPos) * startPix.g;
-      unsigned int blue = subPos * endPix.b + (STEPS - subPos) * startPix.b;
-      leds[iLed].r = red / STEPS;
-      leds[iLed].g = green / STEPS;
-      leds[iLed].b = blue / STEPS;
+      unsigned int red = subPos * endPix.red + (STEPS - subPos) * startPix.red;
+      unsigned int green = subPos * endPix.green + (STEPS - subPos) * startPix.green;
+      unsigned int blue = subPos * endPix.blue + (STEPS - subPos) * startPix.blue;
+      leds[iLed].red = red / STEPS;
+      leds[iLed].green = green / STEPS;
+      leds[iLed].blue = blue / STEPS;
     }
   }
   

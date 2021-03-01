@@ -41,17 +41,30 @@ void turnDim()
   dim_up = !dim_up;
 }
 
-uint8_t brightness = 30;
+int16_t brightness = 30;
 void dim()
 {
-  if(dim_up && brightness < 255)
+  int8_t step = brightness / 20;
+  step++;   // make sure step is at least 1 when below 20
+
+  if(dim_up)
   {
-    brightness++;
+    brightness += step;
   }
-  else if(!dim_up && brightness > 0)
+  else
   {
-    brightness--;
+    brightness -= step;
   }
+
+  if(brightness > 255)
+  {
+    brightness = 255;
+  }
+  else if(brightness < 1)
+  {
+    brightness = 1;
+  }
+
   FastLED.setBrightness(brightness);
 }
 

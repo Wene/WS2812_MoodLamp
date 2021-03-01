@@ -5,6 +5,9 @@ Rand::Rand(CRGB *leds, unsigned int count) : Animation(leds, count)
   step_time = 30;
   cycle_pos = 0;
 
+  ledsPerSide = led_count / SIDES;
+  subStep = (SUB_PIXELS_COUNT - STEPS) / ledsPerSide;
+
   for(uint8_t iDot = 0; iDot < DOTS; iDot++)
   {
     new_dots();
@@ -19,15 +22,12 @@ void Rand::animate(unsigned long now)
   }
   last_time = now;
 
-  uint8_t ledsPerSide = led_count / SIDES;
-  uint8_t subStep = (SUB_COUNT - STEPS) / ledsPerSide;
-  uint8_t positionsToCalculate[ledsPerSide];
-
-  uint8_t iPos = SUB_COUNT - 1 - cycle_pos;
-  for(int8_t iLed = ledsPerSide-1; iLed >= 0; iLed--)
+  uint8_t subPixelPos[ledsPerSide];
+  uint8_t iSubPos = SUB_PIXELS_COUNT - 1 - cycle_pos;
+  for(int8_t i = ledsPerSide-1; i >= 0; i--)
   {
-    positionsToCalculate[iLed] = iPos;
-    iPos -= subStep;
+    subPixelPos[i] = iSubPos;
+    iSubPos -= subStep;
   }
 
   for(uint8_t iSide = 0; iSide < SIDES; iSide++)
@@ -37,8 +37,8 @@ void Rand::animate(unsigned long now)
     for(uint8_t iPos = 0; iPos < ledsPerSide; iPos++)
     {
       uint8_t iLed = sideStart + iPos;
-      uint8_t iPart = positionsToCalculate[iLed] / STEPS;
-      uint8_t subPos = positionsToCalculate[iLed] % STEPS;
+      uint8_t iPart = subPixelPos[iPos] / STEPS;
+      uint8_t subPos = subPixelPos[iPos] % STEPS;
 
       CRGB startPix;
       startPix.setHue(sides[iSide][iPart]);

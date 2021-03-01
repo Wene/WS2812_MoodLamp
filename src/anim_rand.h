@@ -20,8 +20,8 @@ private:
   
   uint8_t sides[SIDES][DOTS];
   uint8_t cycle_pos;
+
   void new_dots();
-  uint8_t sub_dots[SUB_COUNT];
 };
 
 #endif //ANIM_RAND_H

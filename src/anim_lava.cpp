@@ -53,9 +53,10 @@ void Lava::animate(unsigned long now)
 
         if(start || end)
         {
-          uint8_t startValue = start ? 200 : 0;
-          uint8_t endValue = end ? 200 : 0;
-          uint8_t diff = subPos * endValue + (SUB_POSITIONS - subPos) * startValue;
+          unsigned int startValue = start ? 200 : 0;
+          unsigned int endValue = end ? 200 : 0;
+          unsigned int diff = subPos * endValue + (SUB_POSITIONS - subPos) * startValue;
+          diff /= SUB_POSITIONS;
           workingLED.subtractFromRGB(diff);
         }
       }
@@ -67,7 +68,6 @@ void Lava::animate(unsigned long now)
       cyclePos = 0;
       bubble_move();
     }
-
   }
 }
 

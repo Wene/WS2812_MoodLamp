@@ -3,6 +3,11 @@
 
 #include "animation.h"
 
+#define SIDES 4
+#define BUBBLES 5
+#define SUB_POSITIONS 20
+#define SUB_PIX_COUNT SUB_POSITIONS*(BUBBLES-1)
+
 class Lava : public Animation
 {
 public:
@@ -15,8 +20,13 @@ private:
   uint8_t hue_pos;
   unsigned int bubble_pos;
   
-  uint8_t sub_pixels;
+  bool bubbles[SIDES][BUBBLES];
+  uint8_t ledsPerSide;
   uint8_t dim_part;
+  uint8_t cyclePos;
+  uint8_t subStep;
+
+  void bubble_move();
 };
 
 

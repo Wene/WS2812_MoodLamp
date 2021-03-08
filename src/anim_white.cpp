@@ -8,6 +8,7 @@ White::White(CRGB *leds, unsigned int count) : Animation(leds, count)
     dim_pixels[i].reduction = random(100, 200);
     dim_pixels[i].rising = (random(2) == 1);
   }
+  last_time = 0;
 }
 
 void White::animate(unsigned long now)

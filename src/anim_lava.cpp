@@ -16,6 +16,9 @@ Lava::Lava(CRGB *leds, unsigned int count) : Animation(leds, count)
       bubbles[iSide][iBubble] = false;
     }
   }
+
+  last_bubble_step = 0;
+  last_hue_step = 0;
 }
 
 void Lava::animate(unsigned long now)

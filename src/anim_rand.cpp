@@ -12,6 +12,8 @@ Rand::Rand(CRGB *leds, unsigned int count) : Animation(leds, count)
   {
     new_dots();
   }
+
+  last_time = 0;
 }
 
 void Rand::animate(unsigned long now)

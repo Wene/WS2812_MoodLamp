@@ -3,7 +3,7 @@
 #include "button.h"
 #include "anim_rand.h"
 #include "anim_lava.h"
-//#include "anim_white.h"
+#include "anim_white.h"
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
@@ -82,11 +82,11 @@ void cycleAnim()
     case 1:
       anim = new Rand(leds, NUM_LEDS);
     break;
-//    case 2:
-//      anim = new White(leds, NUM_LEDS);
-//    break;
+    case 2:
+      anim = new White(leds, NUM_LEDS);
+    break;
   }
-  if(++last_anim > 1)
+  if(++last_anim > 2)
   {
     last_anim = 0;
   }
@@ -98,10 +98,10 @@ void setup() {
   FastLED.clear(true);
   FastLED.show();
   
-  btn.register_shortPush(toggleLight);
-
   toggleLight();
   cycleAnim();
+
+  btn.register_shortPush(toggleLight);
 }
 
 void loop()

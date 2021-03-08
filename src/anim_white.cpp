@@ -28,7 +28,7 @@ void White::animate(unsigned long now)
       {
         if(dim_pixels[i].rising)
         {
-          dim_pixels[i].reduction++;
+          dim_pixels[i].reduction += 10;
           if(dim_pixels[i].reduction >= 200)
           {
             dim_pixels[i].rising = false;
@@ -36,17 +36,17 @@ void White::animate(unsigned long now)
         }
         else  // falling
         {
-          dim_pixels[i].reduction--;
+          dim_pixels[i].reduction -= 10;
         }
         leds[iLed].subtractFromRGB(dim_pixels[i].reduction);
 
-        if(dim_pixels[i].reduction <= 1)
+        if(dim_pixels[i].reduction <= 10)
         {
           dim_pixels[i].rising = true;
           dim_pixels[i].pos = random(led_count);
         }
+        break;  // corresponding LED found - search no further.
       }
-      break;  // corresponding LED found - search no further.
     }
   }
 }

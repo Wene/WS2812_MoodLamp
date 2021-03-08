@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include "button.h"
-#include "animation.h"
 #include "anim_rand.h"
 #include "anim_lava.h"
+//#include "anim_white.h"
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
@@ -17,7 +17,7 @@ void dim();
 void turnDim();
 void cycleAnim();
 
-bool light_on = false;
+bool light_on = true;
 void toggleLight()
 {
   light_on = !light_on;
@@ -68,7 +68,7 @@ void dim()
   FastLED.setBrightness(brightness);
 }
 
-Animation *anim;
+Animation *anim = nullptr;
 void cycleAnim()
 {
   static int last_anim = 0;
@@ -82,6 +82,9 @@ void cycleAnim()
     case 1:
       anim = new Rand(leds, NUM_LEDS);
     break;
+//    case 2:
+//      anim = new White(leds, NUM_LEDS);
+//    break;
   }
   if(++last_anim > 1)
   {
@@ -96,10 +99,9 @@ void setup() {
   FastLED.show();
   
   btn.register_shortPush(toggleLight);
-  btn.register_longPush(Button::empty_callback);
-  btn.register_stopPush(cycleAnim);
 
-  anim = new Rand(leds, NUM_LEDS);
+  toggleLight();
+  cycleAnim();
 }
 
 void loop()

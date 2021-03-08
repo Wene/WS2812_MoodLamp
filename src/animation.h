@@ -9,7 +9,7 @@ protected:
   CRGB *leds;
   unsigned int led_count;
 public:
-  Animation(CRGB *leds, unsigned int led_count) : leds{leds}, led_count{led_count} {}
+  Animation(CRGB *leds, unsigned int led_count);
   virtual void animate(unsigned long) = 0;
   virtual ~Animation();
 };

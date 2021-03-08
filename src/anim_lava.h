@@ -12,7 +12,7 @@ class Lava : public Animation
 {
 public:
   Lava(CRGB *leds, unsigned int count);
-  void animate(unsigned long now);
+  void animate(unsigned long now) override;
 
 private:
   unsigned long last_hue_step;

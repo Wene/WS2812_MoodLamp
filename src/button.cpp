@@ -5,9 +5,8 @@
 #define LONG_START 300
 #define INTERVAL 100
 
-Button::Button(int pin)
+Button::Button(int pin) : pin{pin}
 {
-  this->pin = pin;
   pinMode(pin, INPUT_PULLUP);
   push_count = 0;
 

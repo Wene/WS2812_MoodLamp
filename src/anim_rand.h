@@ -12,7 +12,7 @@ class Rand : public Animation
 {
 public:
   Rand(CRGB *leds, unsigned int count);
-  void animate(unsigned long now);
+  void animate(unsigned long now) override;
   
 private:
   unsigned long step_time;

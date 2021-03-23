@@ -21,7 +21,7 @@ void White::animate(unsigned long now)
 
   for(uint8_t iLed = 0; iLed < led_count; iLed++)
   {
-    leds[iLed] = CRGB::White;
+    leds[iLed] = 0xa0b075;
     for(uint8_t i = 0; i < DIM_NUM; i++)
     {
       if(dim_pixels[i].pos == iLed)

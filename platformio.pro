@@ -31,13 +31,15 @@ DEFINES += "__AVR__"
 
 OTHER_FILES += platformio.ini
 
-SOURCES += src/anim_rand.cpp
+SOURCES += src/anim_rand.cpp \
+    src/settings.cpp
 SOURCES += src/anim_white.cpp
 SOURCES += src/anim_lava.cpp
 SOURCES += src/animation.cpp
 SOURCES += src/button.cpp
 SOURCES += src/main.cpp
-HEADERS += src/anim_rand.h
+HEADERS += src/anim_rand.h \
+    src/settings.h
 HEADERS += src/anim_white.h
 HEADERS += src/anim_lava.h
 HEADERS += src/animation.h

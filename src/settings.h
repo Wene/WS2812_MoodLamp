@@ -13,6 +13,7 @@ public:
   void setBrightness(uint8_t value);
   void setAnimation(uint8_t value);
 private:
+  bool changed;
   struct block
   {
     uint8_t level;

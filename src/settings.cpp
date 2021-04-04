@@ -6,6 +6,7 @@ Settings::Settings()
   block current = {.level = 0, .brightness = 30, .animation = 1};
   data = {};
   position = 0;
+  changed = false;
   bool found = false;
 
   while(position <= EEPROM.length() - sizeof(block))
@@ -32,12 +33,17 @@ Settings::Settings()
 
 void Settings::store()
 {
-  EEPROM.put(position, data);
-  position += sizeof(block);
-  if(position > EEPROM.length() - sizeof(block))
+  if(changed)
   {
-    position = 0;
-    data.level++;
+    changed = false;
+
+    EEPROM.put(position, data);
+    position += sizeof(block);
+    if(position > EEPROM.length() - sizeof(block))
+    {
+      position = 0;
+      data.level++;
+    }
   }
 }
 
@@ -53,10 +59,18 @@ uint8_t Settings::getAnimation(uint8_t max)
 
 void Settings::setBrightness(uint8_t value)
 {
-  data.brightness = value;
+  if(data.brightness != value)
+  {
+    changed = true;
+    data.brightness = value;
+  }
 }
 
 void Settings::setAnimation(uint8_t value)
 {
-  data.animation = value;
+  if(data.animation != value)
+  {
+    changed = true;
+    data.animation = value;
+  }
 }

@@ -13,11 +13,11 @@ CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
 
-void dim();
-void turnDim();
-void cycleAnim();
 
 bool light_on = true;
+static void dim();
+static void turnDim();
+static void cycleAnim();
 void toggleLight()
 {
   light_on = !light_on;
@@ -36,13 +36,13 @@ void toggleLight()
 }
 
 bool dim_up = true;
-void turnDim()
+static void turnDim()
 {
   dim_up = !dim_up;
 }
 
+static void dim()
 int16_t brightness = 30;
-void dim()
 {
   int8_t step = brightness / 20;
   step++;   // make sure step is at least 1 when below 20
@@ -69,7 +69,7 @@ void dim()
 }
 
 Animation *anim = nullptr;
-void cycleAnim()
+static void createAnim()
 {
   static int last_anim = 0;
   delete anim;

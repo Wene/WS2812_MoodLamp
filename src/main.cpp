@@ -4,6 +4,7 @@
 #include "anim_rand.h"
 #include "anim_lava.h"
 #include "anim_white.h"
+#include "settings.h"
 
 #define NUM_LEDS 32
 #define DATA_PIN 10
@@ -13,11 +14,13 @@ CRGB leds[NUM_LEDS];
 
 Button btn(BUTTON_PIN);
 
+Settings settings;
 
-bool light_on = true;
 static void dim();
 static void turnDim();
 static void cycleAnim();
+
+bool light_on = false;
 void toggleLight()
 {
   light_on = !light_on;
@@ -32,6 +35,7 @@ void toggleLight()
     FastLED.show();
     btn.register_longPush(Button::empty_callback);
     btn.register_stopPush(cycleAnim);
+    settings.store();
   }
 }
 
@@ -42,8 +46,8 @@ static void turnDim()
 }
 
 static void dim()
-int16_t brightness = 30;
 {
+  int16_t brightness = settings.getBrightness();
   int8_t step = brightness / 20;
   step++;   // make sure step is at least 1 when below 20
 
@@ -66,14 +70,17 @@ int16_t brightness = 30;
   }
 
   FastLED.setBrightness(brightness);
+
+  settings.setBrightness(brightness);
 }
 
 Animation *anim = nullptr;
+
 static void createAnim()
 {
-  static int last_anim = 0;
+  uint8_t anim_no = settings.getAnimation(2);
   delete anim;
-  switch(last_anim)
+  switch(anim_no)
   {
     default:
     case 0:
@@ -86,20 +93,27 @@ static void createAnim()
       anim = new White(leds, NUM_LEDS);
     break;
   }
-  if(++last_anim > 2)
+}
+
+static void cycleAnim()
+{
+  uint8_t anim_no = settings.getAnimation(2);
+  if(++anim_no > 2)
   {
-    last_anim = 0;
+    anim_no = 0;
   }
+  settings.setAnimation(anim_no);
+  createAnim();
 }
 
 void setup() {
-  FastLED.setBrightness(brightness);
+  FastLED.setBrightness(settings.getBrightness());
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
   FastLED.clear(true);
   FastLED.show();
   
-  toggleLight();
-  cycleAnim();
+  btn.register_stopPush(cycleAnim);
+  createAnim();
 
   btn.register_shortPush(toggleLight);
 }

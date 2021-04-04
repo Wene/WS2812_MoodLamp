@@ -11,16 +11,18 @@
 #define BUTTON_PIN 9
 
 CRGB leds[NUM_LEDS];
-
 Button btn(BUTTON_PIN);
-
 Settings settings;
+
+Animation *anim = nullptr;
 
 static void dim();
 static void turnDim();
 static void cycleAnim();
 
 bool light_on = false;
+bool dim_up = true;
+
 void toggleLight()
 {
   light_on = !light_on;
@@ -39,7 +41,6 @@ void toggleLight()
   }
 }
 
-bool dim_up = true;
 static void turnDim()
 {
   dim_up = !dim_up;
@@ -73,8 +74,6 @@ static void dim()
 
   settings.setBrightness(brightness);
 }
-
-Animation *anim = nullptr;
 
 static void createAnim()
 {

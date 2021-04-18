@@ -20,24 +20,59 @@ static void dim();
 static void turnDim();
 static void cycleAnim();
 
-bool light_on = false;
+enum struct LightState
+{
+  off,
+  on,
+  shutting_down
+};
+
+LightState light_state = LightState::off;
 bool dim_up = true;
+
+static void shut_down(unsigned long now, bool begin)
+{
+  static unsigned long last_time;
+  static uint8_t step = 255;
+  if(begin)
+  {
+    step = 255;
+  }
+
+  if(last_time + 50 < now)
+  {
+    last_time = now;
+    for(uint8_t i = 0; i < NUM_LEDS; i++)
+    {
+      leds[i].subtractFromRGB(1);
+    }
+
+    step--;
+    if(0 == step)
+    {
+      light_state = LightState::off;
+      FastLED.clear(true);
+    }
+  }
+}
 
 void toggleLight()
 {
-  light_on = !light_on;
-  if(light_on)
+  switch(light_state)
   {
+  default:
+  case LightState::off:
+    light_state = LightState::on;
     btn.register_longPush(dim);
-    btn.register_stopPush(turnDim);    
-  }
-  else
-  {
-    FastLED.clear();
-    FastLED.show();
+    btn.register_stopPush(turnDim);
+    break;
+  case LightState::on:
+    light_state = LightState::shutting_down;
     btn.register_longPush(Button::empty_callback);
     btn.register_stopPush(cycleAnim);
     settings.store();
+    shut_down(0, true);
+    break;
   }
 }
 
@@ -122,11 +157,17 @@ void loop()
   unsigned long now = millis();
   
   btn.tick(now);
-  if(!light_on)
+
+  switch(light_state)
   {
+  default:
     return;
+  case LightState::on:
+    anim->animate(now);
+    break;
+  case LightState::shutting_down:
+    shut_down(now, false);
+    break;
   }
-  
-  anim->animate(now);
   FastLED.show();
 }
